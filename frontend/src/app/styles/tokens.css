@@ -1,0 +1,42 @@
+:root {
+  color-scheme: light;
+
+  --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Instrument Sans', 'Segoe UI', system-ui, sans-serif;
+
+  /* Kertas kotak-kotak tipis + tinta biru buku tulis, kuningan untuk gembok */
+  --paper: #edf1f6;
+  --surface: #ffffff;
+  --surface-sunken: #f5f7fb;
+  --ink: #14213a;
+  --ink-soft: #4b5b76;
+  --ink-faint: #66748d;
+  --line: #d5dde9;
+
+  --cobalt: #1d4ed8;
+  --cobalt-deep: #173ea8;
+  --cobalt-wash: #e3ebfd;
+
+  --brass: #c98a14;
+  --brass-ink: #7c4e0a;
+  --brass-wash: #fbf0d9;
+
+  --moss: #1b7a4b;
+  --moss-wash: #dff2e7;
+
+  --slate: #5b6b84;
+  --slate-wash: #e8edf3;
+
+  --rose: #b3261e;
+  --rose-wash: #fce7e5;
+
+  --radius-s: 4px;
+  --radius-m: 8px;
+  --radius-l: 14px;
+
+  --shadow-hard: 0 2px 0 var(--ink);
+  --shadow-soft: 0 1px 2px rgba(20, 33, 58, 0.06), 0 10px 28px rgba(20, 33, 58, 0.07);
+
+  --sidebar-width: 15rem;
+  --content-max: 70rem;
+}
