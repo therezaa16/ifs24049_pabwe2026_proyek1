@@ -1,42 +1,44 @@
 :root {
   color-scheme: light;
 
-  --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
-  --font-body: 'Instrument Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', 'Plus Jakarta Sans', 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Instrument Sans', 'Plus Jakarta Sans', 'Inter', 'Segoe UI', system-ui, sans-serif;
 
-  /* Kertas kotak-kotak tipis + tinta biru buku tulis, kuningan untuk gembok */
-  --paper: #edf1f6;
+  /* Modern clean palette */
+  --paper: #f8fafc;
   --surface: #ffffff;
-  --surface-sunken: #f5f7fb;
-  --ink: #14213a;
-  --ink-soft: #4b5b76;
-  --ink-faint: #66748d;
-  --line: #d5dde9;
+  --surface-sunken: #f1f5f9;
+  --ink: #0f172a;
+  --ink-soft: #475569;
+  --ink-faint: #64748b;
+  --line: #e2e8f0;
 
-  --cobalt: #1d4ed8;
-  --cobalt-deep: #173ea8;
-  --cobalt-wash: #e3ebfd;
+  --cobalt: #4f46e5;
+  --cobalt-deep: #4338ca;
+  --cobalt-wash: #eef2ff;
 
-  --brass: #c98a14;
-  --brass-ink: #7c4e0a;
-  --brass-wash: #fbf0d9;
+  --brass: #f59e0b;
+  --brass-ink: #92400e;
+  --brass-wash: #fef3c7;
 
-  --moss: #1b7a4b;
-  --moss-wash: #dff2e7;
+  --moss: #059669;
+  --moss-wash: #ecfdf5;
 
-  --slate: #5b6b84;
-  --slate-wash: #e8edf3;
+  --slate: #475569;
+  --slate-wash: #f1f5f9;
 
-  --rose: #b3261e;
-  --rose-wash: #fce7e5;
+  --rose: #dc2626;
+  --rose-wash: #fef2f2;
 
-  --radius-s: 4px;
-  --radius-m: 8px;
-  --radius-l: 14px;
+  --radius-s: 6px;
+  --radius-m: 10px;
+  --radius-l: 16px;
 
-  --shadow-hard: 0 2px 0 var(--ink);
-  --shadow-soft: 0 1px 2px rgba(20, 33, 58, 0.06), 0 10px 28px rgba(20, 33, 58, 0.07);
+  --shadow-hard: 0 1px 2px 0 rgb(0 0 0 / 0.03), 0 1px 3px 0 rgb(0 0 0 / 0.05);
+  --shadow-soft: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-elevated: 0 20px 25px -5px rgb(15 23 42 / 0.05), 0 8px 10px -6px rgb(15 23 42 / 0.02);
+  --shadow-glow: 0 0 0 1px rgb(79 70 229 / 0.05), 0 10px 40px -10px rgb(79 70 229 / 0.4);
 
-  --sidebar-width: 15rem;
-  --content-max: 70rem;
+  --sidebar-width: 17rem;
+  --content-max: 80rem;
 }
