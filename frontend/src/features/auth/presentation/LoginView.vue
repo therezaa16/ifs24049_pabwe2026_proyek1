@@ -36,8 +36,11 @@ const submit = async () => {
 <template>
   <AuthLayout>
     <form class="card" novalidate @submit.prevent="submit">
-      <h1>Masuk</h1>
-      <p class="lead">Lanjutkan mencatat keuangan dan menuntaskan misi belajarmu.</p>
+      <div class="card-head">
+        <p class="card-kicker">Selamat datang kembali</p>
+        <h1>Masuk</h1>
+        <p class="lead">Lanjutkan mencatat keuangan dan menuntaskan misi belajarmu.</p>
+      </div>
 
       <p v-if="formError" class="form-error" role="alert">{{ formError }}</p>
 
@@ -63,9 +66,11 @@ const submit = async () => {
 </template>
 
 <style scoped>
-.card { width: min(26rem, 100%); background: var(--surface); border: 1.5px solid var(--ink); border-radius: var(--radius-m); padding: 2rem; box-shadow: 6px 6px 0 var(--ink); }
-h1 { font-size: 1.9rem; margin-bottom: 0.35rem; }
-.lead { color: var(--ink-soft); margin-bottom: 1.5rem; }
-.form-error { background: var(--rose-wash); color: var(--rose); border-left: 5px solid var(--rose); padding: 0.6rem 0.8rem; margin-bottom: 1rem; font-weight: 500; }
-.switch { margin-top: 1.25rem; text-align: center; color: var(--ink-soft); }
+.card { width: min(28rem, 100%); background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, #fff 100%); border: 1px solid var(--line); border-radius: var(--radius-l); padding: clamp(1.8rem, 4vw, 2.6rem); box-shadow: var(--shadow-elevated); display: grid; gap: 1rem; }
+.card-head { display: grid; gap: 0.4rem; }
+.card-kicker { text-transform: uppercase; letter-spacing: 0.3em; font-size: 0.7rem; color: var(--cobalt); font-weight: 700; }
+h1 { font-size: clamp(2rem, 4vw, 2.8rem); }
+.lead { color: var(--ink-soft); }
+.form-error { background: var(--rose-wash); color: var(--rose); border: 1px solid rgba(220, 38, 38, 0.2); border-radius: var(--radius-m); padding: 0.7rem 0.9rem; font-weight: 500; }
+.switch { margin-top: 0.5rem; text-align: center; color: var(--ink-soft); }
 </style>

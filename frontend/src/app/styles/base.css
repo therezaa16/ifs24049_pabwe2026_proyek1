@@ -69,32 +69,32 @@ canvas { max-width: 100%; }
   gap: 0.5rem;
   min-height: 2.5rem;
   padding: 0.5rem 1rem;
-  border: 1.5px solid var(--ink);
-  border-radius: var(--radius-s);
+  border: 1px solid transparent;
+  border-radius: var(--radius-m);
   background: var(--surface);
   color: var(--ink);
   font-weight: 600;
   text-decoration: none;
-  transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-soft);
 }
-.btn:hover:not(:disabled) { background: var(--surface-sunken); }
-.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.btn:hover:not(:disabled) { background: var(--surface-sunken); transform: translateY(-1px); box-shadow: var(--shadow-elevated); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
 .btn-primary {
-  background: var(--cobalt);
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
   color: #fff;
-  box-shadow: var(--shadow-hard);
+  box-shadow: var(--shadow-glow);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
-.btn-primary:hover:not(:disabled) { background: var(--cobalt-deep); }
-.btn-primary:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+.btn-primary:hover:not(:disabled) { filter: brightness(1.05); box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.2), 0 15px 45px -12px rgba(79, 70, 229, 0.6); }
 
 .btn-brass {
-  background: var(--brass);
-  color: var(--ink);
-  box-shadow: var(--shadow-hard);
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #78350f;
+  box-shadow: 0 10px 40px -12px rgba(245, 158, 11, 0.5);
 }
-.btn-brass:hover:not(:disabled) { background: #d99a22; }
-.btn-brass:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+.btn-brass:hover:not(:disabled) { filter: brightness(1.02); }
 
 .btn-danger { color: var(--rose); border-color: var(--rose); }
 .btn-danger:hover:not(:disabled) { background: var(--rose-wash); }
@@ -108,13 +108,15 @@ canvas { max-width: 100%; }
 .field > label, .field > .label { font-weight: 600; font-size: 0.9rem; }
 .input {
   width: 100%;
-  min-height: 2.6rem;
-  padding: 0.5rem 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.6rem 0.9rem;
   background: var(--surface);
-  border: 1.5px solid var(--ink-faint);
-  border-radius: var(--radius-s);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  box-shadow: inset 0 1px 1px rgba(15, 23, 42, 0.01);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-.input:focus { border-color: var(--cobalt); }
+.input:focus { border-color: rgba(79, 70, 229, 0.8); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.05); outline: none; }
 .input[aria-invalid='true'] { border-color: var(--rose); background: var(--rose-wash); }
 .field-error { color: var(--rose); font-size: 0.85rem; font-weight: 500; }
 .field-hint { color: var(--ink-soft); font-size: 0.85rem; }

@@ -65,15 +65,23 @@ onMounted(load);
 </script>
 
 <template>
-  <section class="space-y-6">
-    <header class="head flex flex-wrap gap-4 items-end justify-between">
-      <div>
-        <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">Transaksi</h1>
-        <p class="sub text-sm text-slate-500 mt-1">Pemasukan dan kebutuhan langsung berlaku. Keinginan menunggu misi belajar.</p>
+  <section class="space-y-8">
+    <header class="head flex flex-wrap gap-6 items-start justify-between">
+      <div class="space-y-2">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/15">
+            <AppIcon name="receipt" :size="18" class="text-white" />
+          </div>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-indigo-500">Transaksi</p>
+            <h1 class="text-2xl md:text-4xl font-extrabold text-slate-900 tracking-tight mt-1">Catatan keuangan</h1>
+          </div>
+        </div>
+        <p class="sub text-sm md:text-base text-slate-500 max-w-2xl">Pemasukan dan kebutuhan langsung berlaku. Keinginan tetap terkunci hingga kamu menyelesaikan misi belajar.</p>
       </div>
       <button
         type="button"
-        class="btn btn-primary px-4 py-2.5 rounded-xl font-semibold text-sm shadow-sm flex items-center gap-2 hover:shadow-md transition-all"
+        class="btn btn-primary px-5 py-2.5 rounded-2xl font-semibold text-sm flex items-center gap-2"
         @click="showForm = true"
       >
         <AppIcon name="plus" :size="18" /> Catat transaksi
@@ -83,29 +91,30 @@ onMounted(load);
     <!-- Locked Wishes Banner -->
     <div
       v-if="store.lockedWishes.length"
-      class="vault flex items-center gap-3.5 p-4 bg-amber-50/80 border border-amber-200 rounded-2xl text-amber-900 shadow-xs"
+      class="vault relative overflow-hidden flex items-center gap-4 p-5 bg-gradient-to-r from-amber-50 via-orange-50/80 to-white border border-amber-200/80 rounded-3xl text-amber-900 shadow-sm"
       role="status"
     >
-      <div class="p-2 bg-amber-100 rounded-xl shrink-0">
-        <PadlockMark :size="32" />
+      <div class="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-amber-100/40 to-transparent"></div>
+      <div class="relative p-3 bg-white/80 rounded-2xl shadow-inner">
+        <PadlockMark :size="34" />
       </div>
-      <p class="text-sm font-medium leading-relaxed">
+      <p class="relative text-sm font-medium leading-relaxed">
         <strong class="num font-bold text-amber-950">{{ store.lockedWishes.length }} keinginan terkunci</strong> senilai
         <strong class="num font-bold text-amber-950">{{ formatRupiah(lockedTotal) }}</strong> menunggu misi belajar untuk dibuka.
       </p>
     </div>
 
     <!-- Filters Section -->
-    <div class="filters flex flex-wrap gap-3 items-center justify-between bg-white p-3 rounded-2xl border border-slate-200 shadow-xs">
+    <div class="filters flex flex-wrap gap-3 items-center justify-between panel p-3">
       <div class="chips flex flex-wrap gap-1.5" role="group" aria-label="Filter jenis">
         <button
           v-for="filter in typeFilters"
           :key="filter.value"
           type="button"
-          class="chip-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all border"
+          class="chip-btn px-4 py-1.5 rounded-2xl text-xs font-semibold transition-all"
           :class="store.filters.type === filter.value
-            ? 'on bg-slate-900 text-white border-slate-900 shadow-xs'
-            : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'"
+            ? 'bg-gradient-to-r from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/15'
+            : 'bg-white text-slate-600 border border-slate-200 hover:border-indigo-200 hover:text-indigo-600'"
           :aria-pressed="store.filters.type === filter.value"
           @click="store.setFilters({ type: filter.value })"
         >
@@ -114,7 +123,7 @@ onMounted(load);
       </div>
 
       <select
-        class="input status-select px-3 py-1.5 text-xs font-semibold rounded-xl border border-slate-200 bg-slate-50 text-slate-700 outline-none focus:border-brand-500"
+        class="input w-auto px-4 py-1.5 text-xs font-semibold rounded-2xl"
         aria-label="Filter status"
         :value="store.filters.status"
         @change="store.setFilters({ status: $event.target.value })"

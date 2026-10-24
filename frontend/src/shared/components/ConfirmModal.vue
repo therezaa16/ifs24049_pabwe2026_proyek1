@@ -21,7 +21,7 @@ const emit = defineEmits(['confirm', 'close']);
       <div class="flex justify-end gap-2.5 pt-2">
         <button
           type="button"
-          class="px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+          class="px-4 py-2 text-sm font-semibold text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 rounded-2xl transition-all"
           :disabled="busy"
           @click="emit('close')"
         >
@@ -29,11 +29,11 @@ const emit = defineEmits(['confirm', 'close']);
         </button>
         <button
           type="button"
-          class="px-4 py-2 text-sm font-semibold text-white rounded-lg shadow-sm transition-all flex items-center gap-1.5"
+          class="px-4 py-2 text-sm font-semibold text-white rounded-2xl shadow-lg transition-all flex items-center gap-1.5"
           :class="{
-            'bg-rose-600 hover:bg-rose-700 active:scale-95': tone === 'danger',
-            'bg-amber-600 hover:bg-amber-700 active:scale-95': tone === 'warning',
-            'bg-brand-600 hover:bg-brand-700 active:scale-95': tone === 'primary'
+            'bg-gradient-to-r from-rose-500 to-red-600 shadow-rose-500/20 hover:shadow-rose-500/30': tone === 'danger',
+            'bg-gradient-to-r from-amber-400 to-orange-500 text-amber-950 shadow-amber-500/20 hover:shadow-amber-500/30': tone === 'warning',
+            'bg-gradient-to-r from-indigo-500 to-violet-600 shadow-indigo-500/20 hover:shadow-indigo-500/30': tone === 'primary'
           }"
           :disabled="busy"
           @click="emit('confirm')"

@@ -33,16 +33,18 @@ onMounted(() => auth.restoreSession());
 </script>
 
 <template>
-  <div class="shell min-h-screen bg-slate-50 text-slate-800">
-    <!-- Mobile Topbar with Glass Effect -->
-    <header class="topbar sticky top-0 z-20 flex items-center justify-between gap-3 px-4 py-3 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm md:hidden">
+  <div class="shell min-h-screen text-slate-900">
+    <!-- Mobile Topbar -->
+    <header class="topbar sticky top-0 z-20 flex items-center justify-between gap-3 px-4 py-3 bg-white/80 backdrop-blur-xl border-b border-slate-200/70 md:hidden">
       <div class="flex items-center gap-2.5">
-        <PadlockMark :size="28" />
-        <span class="brand-name font-display font-extrabold text-base tracking-tight text-slate-900">{{ APP_TITLE }}</span>
+        <div class="p-1.5 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/10">
+          <PadlockMark :size="24" />
+        </div>
+        <span class="brand-name font-display font-extrabold text-base tracking-tight">{{ APP_TITLE }}</span>
       </div>
       <button
         type="button"
-        class="p-2 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+        class="p-2 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
         aria-label="Keluar"
         @click="promptLogout"
       >
@@ -50,48 +52,50 @@ onMounted(() => auth.restoreSession());
       </button>
     </header>
 
-    <!-- Desktop Sidebar Rail -->
-    <aside class="rail hidden md:flex fixed inset-y-0 left-0 w-64 flex-col justify-between bg-white border-r border-slate-200 p-5 shadow-sm z-30">
+    <!-- Desktop Sidebar -->
+    <aside class="rail hidden md:flex fixed inset-y-0 left-0 w-[17rem] flex-col justify-between bg-white/90 backdrop-blur-xl border-r border-slate-200/70 p-6 z-30">
       <div>
         <div class="rail-brand flex items-center gap-3 pb-6 border-b border-slate-100">
-          <div class="p-2 bg-brand-50 rounded-xl border border-brand-100 shadow-inner">
-            <PadlockMark :size="32" />
+          <div class="relative p-2 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/15">
+            <PadlockMark :size="34" />
           </div>
           <div>
-            <h1 class="font-display font-extrabold text-base leading-tight text-slate-900">{{ APP_TITLE }}</h1>
-            <p class="text-[11px] font-medium text-slate-400 mt-0.5">Sistem Disiplin Belajar</p>
+            <h1 class="font-display font-extrabold text-base leading-tight">{{ APP_TITLE }}</h1>
+            <p class="text-[11px] font-medium text-slate-500 mt-0.5">Disiplin Finansial • Misi Belajar</p>
           </div>
         </div>
 
-        <nav class="nav mt-6 space-y-1.5" aria-label="Menu utama">
+        <nav class="nav mt-6 space-y-1" aria-label="Menu utama">
           <RouterLink
             v-for="item in navItems"
             :key="item.to"
             :to="item.to"
-            class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition-all duration-150"
-            :exact-active-class="item.exact ? 'active text-brand-700 bg-brand-50 font-bold shadow-xs' : ''"
-            :active-class="item.exact ? '' : 'active text-brand-700 bg-brand-50 font-bold shadow-xs'"
+            class="nav-link group flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 transition-all"
+            :exact-active-class="item.exact ? 'active' : ''"
+            :active-class="item.exact ? '' : 'active'"
           >
-            <AppIcon :name="item.icon" :size="20" />
-            <span>{{ item.label }}</span>
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-slate-100/70 group-hover:bg-white group-[.active]:bg-gradient-to-br group-[.active]:from-indigo-500 group-[.active]:to-violet-600 transition-all">
+              <AppIcon :name="item.icon" :size="18" class="text-slate-500 group-hover:text-slate-900 group-[.active]:text-white" />
+            </div>
+            <span class="flex-1">{{ item.label }}</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 opacity-0 group-[.active]:opacity-100 transition-opacity"></span>
           </RouterLink>
         </nav>
       </div>
 
-      <!-- User Profile & Logout -->
-      <div class="rail-user pt-4 border-t border-slate-100">
-        <div class="flex items-center gap-3 p-2 rounded-xl bg-slate-50 border border-slate-100 mb-3">
-          <div class="w-9 h-9 rounded-full bg-brand-600 text-white font-bold text-sm flex items-center justify-center shrink-0 shadow-sm">
+      <div class="rail-user pt-5 border-t border-slate-100 space-y-3">
+        <div class="flex items-center gap-3 p-3 rounded-2xl bg-gradient-to-br from-slate-50 to-white border border-slate-100 shadow-sm">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 text-white font-bold text-sm flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/15">
             {{ (auth.user?.name || 'M').charAt(0).toUpperCase() }}
           </div>
           <div class="overflow-hidden">
-            <p class="user-name text-xs font-bold text-slate-900 truncate">{{ auth.user?.name || 'Mahasiswa' }}</p>
+            <p class="user-name text-sm font-bold truncate">{{ auth.user?.name || 'Mahasiswa' }}</p>
             <p class="user-mail text-[11px] text-slate-500 truncate">{{ auth.user?.email || 'email@mahasiswa.ac.id' }}</p>
           </div>
         </div>
         <button
           type="button"
-          class="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100/80 rounded-xl transition-all"
+          class="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-semibold text-slate-600 hover:text-rose-600 bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 rounded-2xl transition-all shadow-sm"
           @click="promptLogout"
         >
           <AppIcon name="logout" :size="16" /> Keluar
@@ -100,21 +104,25 @@ onMounted(() => auth.restoreSession());
     </aside>
 
     <!-- Main Content Area -->
-    <main class="content md:pl-64 p-4 md:p-8 max-w-7xl mx-auto pb-24 md:pb-12 transition-all">
-      <RouterView />
+    <main class="content md:ml-[17rem] px-4 sm:px-6 lg:px-10 xl:px-14 py-6 md:py-10 pb-28 md:pb-12">
+      <div class="mx-auto w-full max-w-[88rem]">
+        <RouterView />
+      </div>
     </main>
 
     <!-- Mobile Bottom Tabbar -->
-    <nav class="tabbar fixed inset-x-0 bottom-0 z-20 grid grid-cols-3 bg-white/95 backdrop-blur-md border-t border-slate-200 py-2 shadow-lg md:hidden" aria-label="Menu utama">
+    <nav class="tabbar fixed inset-x-0 bottom-0 z-20 grid grid-cols-3 bg-white/90 backdrop-blur-xl border-t border-slate-200/70 py-1.5 md:hidden shadow-[0_-10px_40px_-20px_rgba(79,70,229,0.5)]" aria-label="Menu utama">
       <RouterLink
         v-for="item in navItems"
         :key="item.to"
         :to="item.to"
-        class="tab-link flex flex-col items-center gap-1 py-1 text-[11px] font-semibold text-slate-500 transition-colors"
-        :exact-active-class="item.exact ? 'active text-brand-600 font-bold' : ''"
-        :active-class="item.exact ? '' : 'active text-brand-600 font-bold'"
+        class="tab-link flex flex-col items-center gap-1 py-1 text-[10px] font-semibold text-slate-500 transition-colors"
+        :exact-active-class="item.exact ? 'active' : ''"
+        :active-class="item.exact ? '' : 'active'"
       >
-        <AppIcon :name="item.icon" :size="20" />
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center">
+          <AppIcon :name="item.icon" :size="19" />
+        </div>
         <span>{{ item.label }}</span>
       </RouterLink>
     </nav>
@@ -135,10 +143,13 @@ onMounted(() => auth.restoreSession());
 
 <style scoped>
 .nav-link.active {
-  background-color: #eef2ff;
-  color: #4338ca;
+  color: #312e81;
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.12) 0%, transparent 100%);
 }
 .tab-link.active {
+  color: #4f46e5;
+}
+.tab-link.active :deep(svg) {
   color: #4f46e5;
 }
 </style>

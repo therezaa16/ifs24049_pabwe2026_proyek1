@@ -57,17 +57,18 @@ onBeforeUnmount(() => {
   display: grid;
   place-items: center;
   padding: 1rem;
-  background: rgba(20, 33, 58, 0.55);
+  background: radial-gradient(circle, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+  backdrop-filter: blur(6px);
 }
 .dialog {
   width: min(30rem, 100%);
   max-height: calc(100vh - 2rem);
   overflow-y: auto;
-  background: var(--surface);
-  border: 1.5px solid var(--ink);
-  border-radius: var(--radius-m);
-  box-shadow: 6px 6px 0 var(--ink);
-  animation: dialog-in 0.2s ease-out;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, #fff 100%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-elevated);
+  animation: dialog-in 0.25s ease-out;
 }
 .dialog-wide { width: min(38rem, 100%); }
 .dialog:focus { outline: none; }
@@ -75,11 +76,11 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.25rem;
-  border-bottom: 1.5px solid var(--line);
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid var(--line);
 }
-.dialog-head h2 { font-size: 1.2rem; }
-.dialog-body { padding: 1.25rem; }
+.dialog-head h2 { font-size: 1.25rem; font-weight: 800; }
+.dialog-body { padding: 1.4rem; }
 
 @keyframes dialog-in {
   from { opacity: 0; transform: translateY(10px); }
