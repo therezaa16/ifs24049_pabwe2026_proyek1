@@ -13,5 +13,15 @@ export const missionsApi = {
       transaction_id: transactionId ?? null
     }),
   complete: (sessionId, score) =>
-    httpClient.post(`/missions/sessions/${sessionId}/complete`, score === undefined ? {} : { score })
+    httpClient.post(`/missions/sessions/${sessionId}/complete`, score === undefined ? {} : { score }),
+  generateAi: ({ title, subject, content, cardCount = 3, saveAsDeck = true }) =>
+    httpClient.post('/missions/active-recall/generate', {
+      title,
+      subject,
+      content,
+      card_count: cardCount,
+      save_as_deck: saveAsDeck
+    }),
+  createDeck: (data) => httpClient.post('/missions/active-recall/decks', data),
+  deleteDeck: (deckId) => httpClient.delete(`/missions/active-recall/decks/${deckId}`)
 };

@@ -221,3 +221,53 @@ describe('riwayat misi', () => {
     expect(res.body.missions[0]).toMatchObject({ status: 'selesai', transaction_title: 'Headset gaming' });
   });
 });
+
+describe('Active Recall dengan AI dan materi kustom', () => {
+  it('dapat menghasilkan kuis dari materi menggunakan AI dan menyimpannya sebagai deck', async () => {
+    const res = await ctx.api
+      .post('/api/missions/active-recall/generate')
+      .set(me.headers)
+      .send({
+        title: 'Normalisasi Basis Data',
+        subject: 'Basis Data',
+        content: 'Normalisasi adalah proses pengorganisasian data untuk menghindari redundansi dan anomali. 1NF mensyaratkan setiap atribut bernilai atomik.',
+        card_count: 2,
+        save_as_deck: true
+      });
+
+    expect(res.status).toBe(201);
+    expect(res.body.success).toBe(true);
+    expect(res.body.deck).toMatchObject({
+      title: 'Normalisasi Basis Data',
+      subject: 'Basis Data'
+    });
+    expect(res.body.deck.cards).toHaveLength(2);
+
+    const customDeckId = res.body.deck.id;
+
+    // Masuk dalam daftar deck milik user
+    const listRes = await ctx.api.get('/api/missions/active-recall/decks').set(me.headers);
+    expect(listRes.body.decks.some((d) => d.id === customDeckId)).toBe(true);
+
+    // Dapat dihapus oleh pemiliknya
+    const delRes = await ctx.api.delete(`/api/missions/active-recall/decks/${customDeckId}`).set(me.headers);
+    expect(delRes.status).toBe(200);
+    expect(delRes.body.success).toBe(true);
+  });
+
+  it('dapat membuat deck kustom secara langsung', async () => {
+    const res = await ctx.api
+      .post('/api/missions/active-recall/decks')
+      .set(me.headers)
+      .send({
+        title: 'Algoritma Pencarian',
+        subject: 'Struktur Data',
+        cards: [
+          { question: 'Apa kompleksitas Binary Search?', answer: 'O(log n)', explanation: 'Membagi rentang pencarian menjadi dua pada tiap iterasi.' }
+        ]
+      });
+
+    expect(res.status).toBe(201);
+    expect(res.body.deck.cards).toHaveLength(1);
+  });
+});

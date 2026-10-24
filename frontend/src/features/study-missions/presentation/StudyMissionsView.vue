@@ -68,50 +68,75 @@ onMounted(load);
 </script>
 
 <template>
-  <section>
+  <section class="space-y-6">
     <header class="head">
-      <h1>Misi Belajar</h1>
-      <p class="sub">Selesaikan misi untuk membuka gembok keinginanmu. Waktu belajar diverifikasi oleh server.</p>
+      <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">Misi Belajar</h1>
+      <p class="sub text-sm text-slate-500 mt-1 max-w-2xl">
+        Selesaikan misi untuk membuka gembok keinginanmu. Durasi belajar dan skor kuis diverifikasi langsung oleh server.
+      </p>
     </header>
 
-    <p v-if="loadError" class="load-error" role="alert">{{ loadError }} <button type="button" class="btn btn-small" @click="load">Coba lagi</button></p>
-    <p v-else-if="!missions.ready" class="loading">Memuat misi…</p>
+    <p v-if="loadError" class="load-error p-4 bg-rose-50 border border-rose-200 text-rose-700 text-sm rounded-xl text-center" role="alert">
+      {{ loadError }} <button type="button" class="btn btn-small ml-2 underline font-bold" @click="load">Coba lagi</button>
+    </p>
+    <div v-else-if="!missions.ready" class="loading p-12 text-center text-slate-400 text-sm flex items-center justify-center gap-2">
+      <span class="animate-spin text-xl">⏳</span> Memuat sesi misi…
+    </div>
 
-    <div v-else class="layout">
-      <div class="panel workbench">
-        <div class="tabs" role="tablist" aria-label="Jenis misi">
+    <div v-else class="layout grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <!-- Main Mission Workbench -->
+      <div class="panel workbench lg:col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+        <!-- Tab Selector: Pomodoro vs Active Recall -->
+        <div class="tabs grid grid-cols-2 p-1 bg-slate-100 rounded-xl" role="tablist" aria-label="Jenis misi">
           <button
             v-for="type in missionTypes"
             :key="type"
             type="button"
             role="tab"
-            class="tab"
-            :class="{ on: activeType === type }"
+            class="tab py-2.5 text-xs font-bold rounded-lg transition-all"
+            :class="activeType === type ? 'on bg-white text-brand-700 shadow-xs' : 'text-slate-600 hover:text-slate-900'"
             :aria-selected="activeType === type"
             @click="selectType(type)"
-          >{{ MISSION_LABELS[type] }}</button>
+          >
+            {{ MISSION_LABELS[type] }}
+          </button>
         </div>
 
-        <div class="field">
-          <label for="wish">Keinginan yang ingin dibuka</label>
-          <select id="wish" v-model="selectedWishId" class="input">
+        <!-- Wish Linking Selector -->
+        <div class="field space-y-1.5 p-3.5 bg-slate-50 rounded-xl border border-slate-100">
+          <label for="wish" class="block text-xs font-bold text-slate-700">Tautkan dengan Keinginan yang Ingin Dibuka:</label>
+          <select id="wish" v-model="selectedWishId" class="input w-full px-3 py-2 text-xs font-semibold rounded-lg border border-slate-200 bg-white outline-none focus:border-brand-500">
             <option value="">Belajar bebas (tanpa membuka keinginan)</option>
             <option v-for="wish in availableWishes" :key="wish.id" :value="String(wish.id)">
               {{ wish.title }} · {{ formatRupiah(wish.amount) }}
             </option>
           </select>
-          <span v-if="availableWishes.length === 0" class="field-hint">
-            Tidak ada keinginan terkunci dengan misi {{ MISSION_LABELS[activeType] }}.
+          <span v-if="availableWishes.length === 0" class="field-hint block text-[11px] text-slate-400 italic">
+            Tidak ada keinginan terkunci dengan misi {{ MISSION_LABELS[activeType] }}. Kamu tetap bisa belajar secara bebas.
           </span>
         </div>
 
-        <PomodoroPanel v-if="activeType === MISSION_TYPES.POMODORO" :key="`p-${panelKey}`" :wish="selectedWish" :subject-suggestion="selectedWish ? selectedWish.category : ''" @completed="onCompleted" />
-        <ActiveRecallPanel v-else :key="`a-${panelKey}`" :wish="selectedWish" @completed="onCompleted" />
+        <PomodoroPanel
+          v-if="activeType === MISSION_TYPES.POMODORO"
+          :key="`p-${panelKey}`"
+          :wish="selectedWish"
+          :subject-suggestion="selectedWish ? selectedWish.category : ''"
+          @completed="onCompleted"
+        />
+        <ActiveRecallPanel
+          v-else
+          :key="`a-${panelKey}`"
+          :wish="selectedWish"
+          @completed="onCompleted"
+        />
       </div>
 
-      <aside class="panel">
-        <h2 class="panel-title">Riwayat misi</h2>
-        <p class="panel-hint">Sesi yang sudah selesai atau gagal.</p>
+      <!-- Mission History Sidebar -->
+      <aside class="panel lg:col-span-5 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+        <div>
+          <h2 class="panel-title text-sm font-bold text-slate-800">Riwayat misi belajar</h2>
+          <p class="panel-hint text-xs text-slate-400">Sesi yang telah selesai atau gagal dievaluasi server.</p>
+        </div>
         <MissionHistory :missions="missions.history" />
       </aside>
     </div>
@@ -121,15 +146,6 @@ onMounted(load);
 </template>
 
 <style scoped>
-.head { margin-bottom: 1.25rem; }
-h1 { font-size: 2rem; }
-.sub { color: var(--ink-soft); margin-top: 0.25rem; max-width: 40rem; }
-.layout { display: grid; gap: 1.25rem; align-items: start; }
-.tabs { display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 1.25rem; border: 1.5px solid var(--ink); border-radius: var(--radius-s); overflow: hidden; }
-.tab { padding: 0.65rem; border: 0; border-right: 1.5px solid var(--ink); background: var(--surface); font-weight: 700; }
-.tab:last-child { border-right: 0; }
-.tab.on { background: var(--ink); color: #fff; }
-.loading, .load-error { padding: 1.5rem; text-align: center; color: var(--ink-soft); }
-.load-error { color: var(--rose); }
-@media (min-width: 64rem) { .layout { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); } }
+.head { margin-bottom: 0.5rem; }
+.sub { color: var(--ink-soft); }
 </style>

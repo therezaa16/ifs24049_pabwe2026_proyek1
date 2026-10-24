@@ -55,10 +55,15 @@ export class SqliteMissionRepository {
       .all(userId, MISSION_STATUSES.RUNNING);
   }
 
-  findDecks() {
-    const decks = this.db
-      .prepare('SELECT id, title, description, subject FROM active_recall_decks ORDER BY id ASC')
-      .all();
+  findDecks(userId = null) {
+    const query = userId !== null && userId !== undefined
+      ? 'SELECT id, user_id, title, description, subject, content, created_at FROM active_recall_decks WHERE user_id IS NULL OR user_id = ? ORDER BY id ASC'
+      : 'SELECT id, user_id, title, description, subject, content, created_at FROM active_recall_decks ORDER BY id ASC';
+
+    const decks = userId !== null && userId !== undefined
+      ? this.db.prepare(query).all(userId)
+      : this.db.prepare(query).all();
+
     const selectCards = this.db.prepare(
       'SELECT id, deck_id, question, answer, explanation FROM active_recall_cards WHERE deck_id = ? ORDER BY id ASC'
     );
@@ -76,5 +81,47 @@ export class SqliteMissionRepository {
         GROUP BY d.id
       `)
       .get(id);
+  }
+
+  createDeck({ userId = null, title, description = '', subject, content = '', cards = [], createdAt = new Date().toISOString() }) {
+    const insertDeck = this.db.prepare(
+      'INSERT INTO active_recall_decks (user_id, title, description, subject, content, created_at) VALUES (?, ?, ?, ?, ?, ?)'
+    );
+    const result = insertDeck.run(userId, title, description, subject, content, createdAt);
+    const deckId = Number(result.lastInsertRowid);
+
+    const insertCard = this.db.prepare(
+      'INSERT INTO active_recall_cards (deck_id, question, answer, explanation) VALUES (?, ?, ?, ?)'
+    );
+
+    const savedCards = [];
+    for (const card of cards) {
+      const cardRes = insertCard.run(deckId, card.question, card.answer, card.explanation ?? '');
+      savedCards.push({
+        id: Number(cardRes.lastInsertRowid),
+        deck_id: deckId,
+        question: card.question,
+        answer: card.answer,
+        explanation: card.explanation ?? ''
+      });
+    }
+
+    return {
+      id: deckId,
+      user_id: userId,
+      title,
+      description,
+      subject,
+      content,
+      created_at: createdAt,
+      cards: savedCards
+    };
+  }
+
+  deleteDeck(id, userId) {
+    const result = this.db
+      .prepare('DELETE FROM active_recall_decks WHERE id = ? AND user_id = ?')
+      .run(id, userId);
+    return result.changes > 0;
   }
 }

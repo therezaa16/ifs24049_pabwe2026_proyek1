@@ -14,6 +14,10 @@ export const useMissionsStore = defineStore('missions', () => {
     history.value = (await missionsApi.history()).missions;
   };
 
+  const loadDecks = async () => {
+    decks.value = (await missionsApi.decks()).decks;
+  };
+
   const load = async () => {
     const [settingsData, decksData] = await Promise.all([missionsApi.settings(), missionsApi.decks()]);
     settings.value = settingsData.settings;
@@ -30,6 +34,21 @@ export const useMissionsStore = defineStore('missions', () => {
     return result;
   };
 
+  const generateAiDeck = async ({ title, subject, content, cardCount, saveAsDeck = true }) => {
+    const res = await missionsApi.generateAi({ title, subject, content, cardCount, saveAsDeck });
+    if (res.deck) {
+      const idx = decks.value.findIndex((d) => d.id === res.deck.id);
+      if (idx >= 0) decks.value[idx] = res.deck;
+      else decks.value.unshift(res.deck);
+    }
+    return res;
+  };
+
+  const removeDeck = async (deckId) => {
+    await missionsApi.deleteDeck(deckId);
+    decks.value = decks.value.filter((d) => d.id !== deckId);
+  };
+
   const reset = () => {
     settings.value = { ...DEFAULT_SETTINGS };
     decks.value = [];
@@ -37,5 +56,18 @@ export const useMissionsStore = defineStore('missions', () => {
     ready.value = false;
   };
 
-  return { settings, decks, history, ready, load, loadHistory, startSession, completeSession, reset };
+  return {
+    settings,
+    decks,
+    history,
+    ready,
+    load,
+    loadDecks,
+    loadHistory,
+    startSession,
+    completeSession,
+    generateAiDeck,
+    removeDeck,
+    reset
+  };
 });

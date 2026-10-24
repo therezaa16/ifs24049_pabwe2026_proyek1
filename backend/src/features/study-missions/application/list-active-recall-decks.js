@@ -3,7 +3,7 @@ export class ListActiveRecallDecks {
     this.missionRepository = missionRepository;
   }
 
-  execute() {
-    return this.missionRepository.findDecks();
+  execute({ userId } = {}) {
+    return this.missionRepository.findDecks(userId);
   }
 }

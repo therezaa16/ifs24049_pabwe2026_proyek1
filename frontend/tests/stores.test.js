@@ -19,7 +19,16 @@ vi.mock('@/features/auth/infrastructure/auth.api.js', () => ({
 }));
 vi.mock('@/features/dashboard/infrastructure/dashboard.api.js', () => ({ dashboardApi: { summary: vi.fn() } }));
 vi.mock('@/features/study-missions/infrastructure/missions.api.js', () => ({
-  missionsApi: { settings: vi.fn(), decks: vi.fn(), history: vi.fn(), start: vi.fn(), complete: vi.fn() }
+  missionsApi: {
+    settings: vi.fn(),
+    decks: vi.fn(),
+    history: vi.fn(),
+    start: vi.fn(),
+    complete: vi.fn(),
+    generateAi: vi.fn(),
+    createDeck: vi.fn(),
+    deleteDeck: vi.fn()
+  }
 }));
 vi.mock('@/features/transactions/infrastructure/transactions.api.js', () => ({
   transactionsApi: { list: vi.fn(), create: vi.fn(), cancel: vi.fn(), remove: vi.fn() }
@@ -147,6 +156,19 @@ describe('missions store', () => {
     missionsApi.complete.mockResolvedValue({ passed: true });
     expect(await store.completeSession(5, 90)).toEqual({ passed: true });
     expect(missionsApi.history).toHaveBeenCalledTimes(2);
+
+    missionsApi.generateAi.mockResolvedValue({ success: true, deck: { id: 77, title: 'AI Deck' } });
+    const aiRes = await store.generateAiDeck({ title: 'AI Deck', subject: 'Web', content: 'Konten' });
+    expect(aiRes.deck.id).toBe(77);
+    expect(store.decks[0].id).toBe(77);
+
+    missionsApi.deleteDeck.mockResolvedValue({ success: true });
+    await store.removeDeck(77);
+    expect(store.decks.find((d) => d.id === 77)).toBeUndefined();
+
+    missionsApi.decks.mockResolvedValue({ decks: [{ id: 10, title: 'Deck 10' }] });
+    await store.loadDecks();
+    expect(store.decks).toEqual([{ id: 10, title: 'Deck 10' }]);
 
     store.reset();
     expect(store.ready).toBe(false);

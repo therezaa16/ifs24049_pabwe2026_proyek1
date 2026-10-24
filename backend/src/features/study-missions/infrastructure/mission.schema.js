@@ -1,9 +1,12 @@
 export const missionSchema = `
   CREATE TABLE IF NOT EXISTS active_recall_decks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     title TEXT NOT NULL,
     description TEXT NOT NULL,
-    subject TEXT NOT NULL
+    subject TEXT NOT NULL,
+    content TEXT,
+    created_at TEXT
   );
 
   CREATE TABLE IF NOT EXISTS active_recall_cards (
@@ -32,3 +35,16 @@ export const missionSchema = `
   CREATE INDEX IF NOT EXISTS idx_study_missions_user_completed
     ON study_missions (user_id, completed_at);
 `;
+
+export const migrateMissionSchema = (db) => {
+  const columns = db.prepare('PRAGMA table_info(active_recall_decks)').all().map((c) => c.name);
+  if (!columns.includes('user_id')) {
+    db.exec('ALTER TABLE active_recall_decks ADD COLUMN user_id INTEGER REFERENCES users(id) ON DELETE CASCADE');
+  }
+  if (!columns.includes('content')) {
+    db.exec('ALTER TABLE active_recall_decks ADD COLUMN content TEXT');
+  }
+  if (!columns.includes('created_at')) {
+    db.exec('ALTER TABLE active_recall_decks ADD COLUMN created_at TEXT');
+  }
+};
